@@ -35,6 +35,7 @@ module ClassyEnum
         end
 
         klass_name = "#{self}#{option.to_s.camelize}"
+        Arel::Visitors::ToSql.class_eval("alias :visit_#{klass_name} :visit_String")
         Object.const_set(klass_name, klass) unless Object.const_defined? klass_name
       end
     end
