@@ -23,13 +23,9 @@ module ClassyEnum
       #if user alerts us that they will subclass
       #just keep track of the enums
       #and save the rest of functionality until the subclass
-      #inherits off base class
-      if opts[:subclassed]
-        @@options = enums
-        return
-      end
-
-      self.const_set("OPTIONS", enums) unless self.const_defined? "OPTIONS"
+      #inherits off base class´
+      @@options = enums
+      return if opts[:subclassed]        
 
       enums.each_with_index do |option, index|
 
@@ -74,8 +70,11 @@ module ClassyEnum
       end
 
       #attach the backreference
-      owner_klass.instance_eval do
-        classy_enum_attr superklass.to_s.underscore
+      #TODO: make this prettier/more DRY
+      if defined? @@owner_klass
+        owner_klass.instance_eval do
+          classy_enum_attr superklass.to_s.underscore
+        end
       end
     end
 
@@ -152,7 +151,7 @@ module ClassyEnum
     end
 
     def owner_klass
-      @@owner_klass
+      @@owner_klass || nil
     end
     
     def count(increment=false)
