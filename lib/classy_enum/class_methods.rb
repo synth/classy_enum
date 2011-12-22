@@ -69,13 +69,6 @@ module ClassyEnum
 
       end
 
-      #attach the backreference
-      #TODO: make this prettier/more DRY
-      if defined? @@owner_klass
-        owner_klass.instance_eval do
-          classy_enum_attr superklass.to_s.underscore
-        end
-      end
     end
 
     # Build a new ClassyEnum child instance
